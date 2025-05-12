@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException
-from database import Database
+from app.database import Database
 from model.models import Serie, Ator, Motivo, Avaliacao, Categoria
 
 app = FastAPI()
