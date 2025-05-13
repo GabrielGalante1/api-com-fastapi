@@ -65,7 +65,7 @@ def listar_series():
 @app.get("/atores/")
 def listar_autores():
     db.conectar()
-    sql = "SELECT * FROM autor"
+    sql = "SELECT * FROM ator"
     autores = db.executar_comando(sql)
     db.desconectar()
     return autores
@@ -79,7 +79,6 @@ def listar_categorias():
     db.desconectar()
     return categorias
 
-
 @app.get("/avaliacoes/")
 def listar_avaliacoes():
     db.conectar()
@@ -87,3 +86,67 @@ def listar_avaliacoes():
     avaliacoes = db.executar_comando(sql)
     db.desconectar()
     return avaliacoes
+
+@app.put("/series/{id_serie}")
+def atualizar_serie(id_serie: int, serie: Serie):
+    db.conectar()
+    sql = "UPDATE serie SET titulo = %s, descricao = %s, ano_lancamento = %s, id_categoria = %s WHERE id = %s"
+    db.executar_comando(sql, (serie.titulo, serie.descricao, serie.ano_lancamento, serie.id_categoria, id_serie))
+    db.desconectar()
+    return {"message": "Série atualizada com sucesso"}
+
+@app.put("/atores/{id_ator}")
+def atualizar_ator(id_ator: int, ator: Ator):
+    db.conectar()
+    sql = "UPDATE ator SET nome = %s WHERE id = %s"
+    db.executar_comando(sql, (ator.nome, id_ator))
+    db.desconectar()
+    return {"message": "Ator atualizado com sucesso"}
+
+@app.put("/categorias/{id_categoria}")
+def atualizar_categoria(id_categoria: int, categoria: Categoria):
+    db.conectar()
+    sql = "UPDATE categoria SET nome = %s WHERE id = %s"
+    db.executar_comando(sql, (categoria.nome, id_categoria))
+    db.desconectar()
+    return {"message": "Categoria atualizada com sucesso"}
+
+@app.put("/avaliacoes/{id_avaliacao}")
+def atualizar_avaliacao(id_avaliacao: int, avaliacao: Avaliacao):
+    db.conectar()
+    sql = "UPDATE avaliacao_serie SET nota = %s, comentario = %s WHERE id = %s"
+    db.executar_comando(sql, (avaliacao.nota, avaliacao.comentario, id_avaliacao))
+    db.desconectar()
+    return {"message": "Avaliação atualizada com sucesso"}
+
+@app.delete("/series/{id_serie}")
+def deletar_serie(id_serie: int):
+    db.conectar()
+    sql = "DELETE FROM serie WHERE id = %s"
+    db.executar_comando(sql, (id_serie,))
+    db.desconectar()
+    return {"message": "Série deletada com sucesso"}
+
+@app.delete("/atores/{id_ator}")
+def deletar_ator(id_ator: int):
+    db.conectar()
+    sql = "DELETE FROM ator WHERE id = %s"
+    db.executar_comando(sql, (id_ator,))
+    db.desconectar()
+    return {"message": "Ator deletado com sucesso"}
+
+@app.delete("/categorias/{id_categoria}")
+def deletar_categoria(id_categoria: int):
+    db.conectar()
+    sql = "DELETE FROM categoria WHERE id = %s"
+    db.executar_comando(sql, (id_categoria,))
+    db.desconectar()
+    return {"message": "Categoria deletada com sucesso"}
+
+@app.delete("/avaliacoes/{id_avaliacao}")
+def deletar_avaliacao(id_avaliacao: int):
+    db.conectar()
+    sql = "DELETE FROM avaliacao_serie WHERE id = %s"
+    db.executar_comando(sql, (id_avaliacao,))
+    db.desconectar()
+    return {"message": "Avaliação deletada com sucesso"}
